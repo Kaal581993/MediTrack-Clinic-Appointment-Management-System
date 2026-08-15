@@ -1,13 +1,17 @@
 package com.airtribe.meditrack.entity;
 
+import com.airtribe.meditrack.entity.appointment.Appointment;
+import com.airtribe.meditrack.entity.appointment.AppointmentStatus;
+import com.airtribe.meditrack.entity.appointment.AppointmentType;
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
+import com.airtribe.meditrack.entity.persons.Doctor;
+import com.airtribe.meditrack.entity.persons.Patient;
 
-import java.awt.*;
 import java.util.Date;
 
 // May need to re-visit once with Bill Summar
 
-public class Bill extends Appointment{
+public class Bill extends Appointment {
     private int bill_id;
     Constants constants = new Constants();
     private double doctor_fees;

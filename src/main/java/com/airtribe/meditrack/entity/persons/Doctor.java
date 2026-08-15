@@ -1,4 +1,4 @@
-package com.airtribe.meditrack.entity;
+package com.airtribe.meditrack.entity.persons;
 
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
 

@@ -1,4 +1,4 @@
-package com.airtribe.meditrack.entity;
+package com.airtribe.meditrack.entity.persons;
 
 public enum Gender {
     MALE,
