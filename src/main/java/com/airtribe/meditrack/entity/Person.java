@@ -1,5 +1,7 @@
 package com.airtribe.meditrack.entity;
 
+import com.airtribe.meditrack.entity.id_generators.IdGenerators;
+
 public class Person {
 
     private int p_id;
@@ -8,8 +10,13 @@ public class Person {
     private String L_name;
     private Gender gender;
 
-    public Person(int p_id, int age, String f_name, String l_name, Gender gender) {
-        this.p_id = p_id;
+    IdGenerators id_gen = new IdGenerators();
+
+    public Person() {
+    }
+
+    public Person(int age, String f_name, String l_name, Gender gender) {
+        this.p_id = id_gen.PersonIDGenerator() ;
         this.age = age;
         F_name = f_name;
         L_name = l_name;

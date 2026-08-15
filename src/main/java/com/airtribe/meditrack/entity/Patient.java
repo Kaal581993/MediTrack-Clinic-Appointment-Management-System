@@ -1,22 +1,26 @@
 package com.airtribe.meditrack.entity;
 
+import com.airtribe.meditrack.entity.id_generators.IdGenerators;
+
 public class Patient extends Person{
 
-    int p_id;
-    String medical_history;
+    int pat_id;
+    private String medical_history;
 
-    public Patient(int p_id, int age, String f_name, String l_name, Gender gender) {
-        super(p_id, age, f_name, l_name, gender);
+    IdGenerators id_gen = new IdGenerators();
+
+    public Patient(int age, String f_name, String l_name, Gender gender) {
+        super(age, f_name, l_name, gender);
+        this.pat_id  =id_gen.PatientIDGenerator();
     }
 
-    @Override
-    public int getP_id() {
-        return p_id;
+    public Patient() {
+        super();
     }
 
-    @Override
-    public void setP_id(int p_id) {
-        this.p_id = p_id;
+
+    public int getPat_id() {
+        return pat_id;
     }
 
     public String getMedical_history() {
