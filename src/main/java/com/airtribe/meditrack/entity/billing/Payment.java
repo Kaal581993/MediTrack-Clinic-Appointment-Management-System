@@ -1,4 +1,4 @@
-package com.airtribe.meditrack.entity;
+package com.airtribe.meditrack.entity.billing;
 
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
 import java.util.Scanner;
@@ -9,7 +9,7 @@ public class Payment {
     private final double amount;
     private PaymentStatus status;
     private final PaymentMethods paymentMethod;
-    IdGenerators idGenerators = new IdGenerators();
+    IdGenerators idGenerators = IdGenerators.getInstance();
 
     public Payment(double amount, PaymentMethods paymentMethod) {
         this.paymentId = idGenerators.generatePaymentID();
@@ -79,5 +79,29 @@ public class Payment {
 
     public void setStatus(PaymentStatus status) {
         this.status = status;
+    }
+
+    // Builder pattern (does not alter existing constructors/logic)
+    public static PaymentBuilder builder() {
+        return new PaymentBuilder();
+    }
+
+    public static class PaymentBuilder {
+        private double amount;
+        private PaymentMethods paymentMethod;
+
+        public PaymentBuilder amount(double amount) {
+            this.amount = amount;
+            return this;
+        }
+
+        public PaymentBuilder paymentMethod(PaymentMethods paymentMethod) {
+            this.paymentMethod = paymentMethod;
+            return this;
+        }
+
+        public Payment build() {
+            return new Payment(amount, paymentMethod);
+        }
     }
 }

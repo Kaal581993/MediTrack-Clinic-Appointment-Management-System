@@ -16,7 +16,7 @@ public class Appointment {
     private Doctor doctor;
     private Patient patient;
 
-    IdGenerators idgen = new IdGenerators();
+    IdGenerators idgen = IdGenerators.getInstance();
     public Appointment(Date appointment_date, AppointmentStatus status, AppointmentType type, double appointmentFees,Doctor doctor, Patient patient) {
         this.appointment_id = idgen.NewAppointmentIdGenerator();
         this.appointment_date = appointment_date;
@@ -57,5 +57,49 @@ public class Appointment {
 
     public IdGenerators getIdgen() {
         return idgen;
+    }
+
+    // Builder pattern (does not alter existing constructors/logic)
+  public static class AppointmentBuilder {
+        private Date appointment_date;
+        private AppointmentStatus status;
+        private AppointmentType type;
+        private double appointmentFees;
+        private Doctor doctor;
+        private Patient patient;
+
+        public AppointmentBuilder appointment_date(Date appointment_date) {
+            this.appointment_date = appointment_date;
+            return this;
+        }
+
+        public AppointmentBuilder status(AppointmentStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public AppointmentBuilder type(AppointmentType type) {
+            this.type = type;
+            return this;
+        }
+
+        public AppointmentBuilder appointmentFees(double appointmentFees) {
+            this.appointmentFees = appointmentFees;
+            return this;
+        }
+
+        public AppointmentBuilder doctor(Doctor doctor) {
+            this.doctor = doctor;
+            return this;
+        }
+
+        public AppointmentBuilder patient(Patient patient) {
+            this.patient = patient;
+            return this;
+        }
+
+        public Appointment build() {
+            return new Appointment(appointment_date, status, type, appointmentFees, doctor, patient);
+        }
     }
 }

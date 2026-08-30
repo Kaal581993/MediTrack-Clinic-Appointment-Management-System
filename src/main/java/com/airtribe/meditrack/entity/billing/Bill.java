@@ -1,5 +1,6 @@
-package com.airtribe.meditrack.entity;
+package com.airtribe.meditrack.entity.billing;
 
+import com.airtribe.meditrack.entity.Constants;
 import com.airtribe.meditrack.entity.appointment.Appointment;
 import com.airtribe.meditrack.entity.appointment.AppointmentStatus;
 import com.airtribe.meditrack.entity.appointment.AppointmentType;
@@ -9,7 +10,7 @@ import com.airtribe.meditrack.entity.persons.Patient;
 
 import java.util.Date;
 
-// May need to re-visit once with Bill Summar
+// May need to re-visit once with Bill Summari
 
 public class Bill extends Appointment {
     private int bill_id;
@@ -21,7 +22,7 @@ public class Bill extends Appointment {
     // double appointmentFees;
 
 
-    IdGenerators id_gen = new IdGenerators();
+    IdGenerators id_gen = IdGenerators.getInstance();
 
     public Bill(Date appointment_date,
                 AppointmentStatus status,
@@ -106,4 +107,65 @@ public class Bill extends Appointment {
     }
 
 
+    // Builder pattern (does not alter existing constructors/logic)
+    public static class BillBuilder {
+        private Date appointment_date;
+        private AppointmentStatus status;
+        private AppointmentType type;
+        private double appointmentFees;
+        private Doctor doctor;
+        private Patient patient;
+        private Constants constants;
+        private double doctor_fees;
+        private double totalAmount;
+
+        public BillBuilder appointment_date(Date appointment_date) {
+            this.appointment_date = appointment_date;
+            return this;
+        }
+
+        public BillBuilder status(AppointmentStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public BillBuilder type(AppointmentType type) {
+            this.type = type;
+            return this;
+        }
+
+        public BillBuilder appointmentFees(double appointmentFees) {
+            this.appointmentFees = appointmentFees;
+            return this;
+        }
+
+        public BillBuilder doctor(Doctor doctor) {
+            this.doctor = doctor;
+            return this;
+        }
+
+        public BillBuilder patient(Patient patient) {
+            this.patient = patient;
+            return this;
+        }
+
+        public BillBuilder constants(Constants constants) {
+            this.constants = constants;
+            return this;
+        }
+
+        public BillBuilder doctor_fees(double doctor_fees) {
+            this.doctor_fees = doctor_fees;
+            return this;
+        }
+
+        public BillBuilder totalAmount(double totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
+
+        public Bill build() {
+            return new Bill(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount);
+        }
+    }
 }

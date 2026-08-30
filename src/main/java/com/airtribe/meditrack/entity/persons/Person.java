@@ -10,7 +10,7 @@ public class Person {
     private String L_name;
     private Gender gender;
 
-    IdGenerators id_gen = new IdGenerators();
+    IdGenerators id_gen = IdGenerators.getInstance();
 
     public Person() {
     }
@@ -61,5 +61,37 @@ public class Person {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    // Builder pattern (does not alter existing constructors/logic)
+    public static class PersonBuilder {
+        private int age;
+        private String f_name;
+        private String l_name;
+        private Gender gender;
+
+        public PersonBuilder age(int age) {
+            this.age = age;
+            return this;
+        }
+
+        public PersonBuilder f_name(String f_name) {
+            this.f_name = f_name;
+            return this;
+        }
+
+        public PersonBuilder l_name(String l_name) {
+            this.l_name = l_name;
+            return this;
+        }
+
+        public PersonBuilder gender(Gender gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public Person build() {
+            return new Person(age, f_name, l_name, gender);
+        }
     }
 }
