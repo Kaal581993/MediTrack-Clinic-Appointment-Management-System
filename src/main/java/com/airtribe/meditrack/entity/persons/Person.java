@@ -2,7 +2,7 @@ package com.airtribe.meditrack.entity.persons;
 
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
 
-public class Person {
+public abstract class Person {
 
     private int p_id;
     private int age;
@@ -63,12 +63,17 @@ public class Person {
         this.gender = gender;
     }
 
-    // Builder pattern (does not alter existing constructors/logic)
-    public static class PersonBuilder {
-        private int age;
-        private String f_name;
-        private String l_name;
-        private Gender gender;
+    // Builder pattern (does not alter existing constructors/logic).
+    //
+    // PersonBuilder is abstract because Person is abstract: it cannot instantiate a
+    // Person directly. Concrete subclasses (DoctorBuilder, PatientBuilder) extend this
+    // builder, inherit the fluent setters, and override build() to return a concrete
+    // instance of their own type.
+    public static abstract class PersonBuilder {
+        protected int age;
+        protected String f_name;
+        protected String l_name;
+        protected Gender gender;
 
         public PersonBuilder age(int age) {
             this.age = age;
@@ -90,8 +95,10 @@ public class Person {
             return this;
         }
 
-        public Person build() {
-            return new Person(age, f_name, l_name, gender);
-        }
+        /**
+         * Builds a concrete Person subclass. Abstract here so subclasses must provide
+         * their own implementation that returns a Doctor or Patient.
+         */
+        public abstract Person build();
     }
 }

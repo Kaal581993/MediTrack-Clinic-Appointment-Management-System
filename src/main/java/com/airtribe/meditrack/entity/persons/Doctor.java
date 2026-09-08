@@ -23,33 +23,11 @@ public class Doctor extends Person{
         return new DoctorBuilder();
     }
 
-    public static class DoctorBuilder {
-        private int age;
-        private String f_name;
-        private String l_name;
-        private Gender gender;
+    // Extends PersonBuilder so DoctorBuilder inherits the fluent age/f_name/l_name/gender
+    // setters and satisfies the abstract build() contract with a concrete Doctor.
+    public static class DoctorBuilder extends PersonBuilder {
         private Specialization specialization;
         private double fees;
-
-        public DoctorBuilder age(int age) {
-            this.age = age;
-            return this;
-        }
-
-        public DoctorBuilder f_name(String f_name) {
-            this.f_name = f_name;
-            return this;
-        }
-
-        public DoctorBuilder l_name(String l_name) {
-            this.l_name = l_name;
-            return this;
-        }
-
-        public DoctorBuilder gender(Gender gender) {
-            this.gender = gender;
-            return this;
-        }
 
         public DoctorBuilder specialization(Specialization specialization) {
             this.specialization = specialization;
@@ -61,6 +39,7 @@ public class Doctor extends Person{
             return this;
         }
 
+        @Override
         public Doctor build() {
             Doctor doctor = new Doctor(age, f_name, l_name, gender);
             doctor.specialization = specialization;

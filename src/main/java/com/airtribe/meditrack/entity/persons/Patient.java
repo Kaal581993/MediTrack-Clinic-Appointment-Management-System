@@ -37,38 +37,17 @@ public class Patient extends Person{
         return new PatientBuilder();
     }
 
-    public static class PatientBuilder {
-        private int age;
-        private String f_name;
-        private String l_name;
-        private Gender gender;
+    // Extends PersonBuilder so PatientBuilder inherits the fluent age/f_name/l_name/gender
+    // setters and satisfies the abstract build() contract with a concrete Patient.
+    public static class PatientBuilder extends PersonBuilder {
         private String medical_history;
-
-        public PatientBuilder age(int age) {
-            this.age = age;
-            return this;
-        }
-
-        public PatientBuilder f_name(String f_name) {
-            this.f_name = f_name;
-            return this;
-        }
-
-        public PatientBuilder l_name(String l_name) {
-            this.l_name = l_name;
-            return this;
-        }
-
-        public PatientBuilder gender(Gender gender) {
-            this.gender = gender;
-            return this;
-        }
 
         public PatientBuilder medical_history(String medical_history) {
             this.medical_history = medical_history;
             return this;
         }
 
+        @Override
         public Patient build() {
             Patient patient = new Patient(age, f_name, l_name, gender);
             patient.medical_history = medical_history;
