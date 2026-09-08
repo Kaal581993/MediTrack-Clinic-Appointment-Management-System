@@ -86,6 +86,10 @@ public class Payment {
         return new PaymentBuilder();
     }
 
+    public int getPayment_id() {
+        return paymentId;
+    }
+
     public static class PaymentBuilder {
         private double amount;
         private PaymentMethods paymentMethod;

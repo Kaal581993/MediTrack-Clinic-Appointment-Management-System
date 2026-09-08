@@ -18,6 +18,10 @@ public class Doctor extends Person{
     private Specialization specialization;
     private double fees;
 
+    public double getFees() {
+        return fees;
+    }
+
     // Builder pattern (does not alter existing constructors/logic)
     public static DoctorBuilder builder() {
         return new DoctorBuilder();

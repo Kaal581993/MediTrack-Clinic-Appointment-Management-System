@@ -7,6 +7,7 @@ import com.airtribe.meditrack.entity.appointment.AppointmentType;
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Patient;
+import com.airtribe.meditrack.strategey.billiing.BillingStrategey;
 
 import java.util.Date;
 
@@ -19,26 +20,55 @@ public class Bill extends Appointment {
 
    final private double tax = constants.getTAX_RATE();
     private double totalAmount;
+    private BillingStrategey billingStrategey;
     // double appointmentFees;
 
 
     IdGenerators id_gen = IdGenerators.getInstance();
 
-    public Bill(Date appointment_date,
-                AppointmentStatus status,
-                AppointmentType type,
-                double appointmentFees,
-                Doctor doctor,
-                Patient patient,
-                Constants constants,
-                double doctor_fees,
-                double totalAmount) { // Corrected typo
+    Bill(
+        Date appointment_date,
+        AppointmentStatus status,
+        AppointmentType type,
+        double appointmentFees,
+        Doctor doctor,
+        Patient patient,
+        Constants constants,
+        double doctor_fees,
+        double totalAmount
+    ) {
+        this(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount, null);
+    }
+
+    Bill(
+        Date appointment_date,
+        AppointmentStatus status,
+        AppointmentType type,
+        double appointmentFees,
+        Doctor doctor,
+        Patient patient,
+        Constants constants,
+        double doctor_fees,
+        double totalAmount,
+        BillingStrategey billingStrategey
+    ) {
         super(appointment_date, status, type, appointmentFees, doctor, patient);
         this.bill_id = id_gen.BillIdGenerator();
         this.constants = constants;
         this.doctor_fees = doctor_fees;
-        this.totalAmount = totalAmount; // Corrected typo
+        this.totalAmount = totalAmount;
+        this.billingStrategey = billingStrategey;
+    }
 
+    private Bill(
+        BillBuilder billBuilder
+    ) {
+        super(billBuilder.appointment_date, billBuilder.status, billBuilder.type, billBuilder.appointmentFees, billBuilder.doctor, billBuilder.patient);
+        this.bill_id = id_gen.BillIdGenerator();
+        this.constants = billBuilder.constants;
+        this.doctor_fees = billBuilder.doctor_fees;
+        this.totalAmount = billBuilder.totalAmount;
+        this.billingStrategey = billBuilder.billingStrategy;
     }
 
     public int getBill_id() {
@@ -63,33 +93,33 @@ public class Bill extends Appointment {
         return totalAmount;
     }
 
-    // Renamed from calculateTotal for clarity
     public double calculateSubTotal(){
-        return doctor_fees + getAppointmentFees(); // Using getter for appointmentFees from parent
+        return billingStrategey.calculateSubTotal(this);
     }
 
-    // This method now calculates and returns the tax amount without side effects.
     public double calculateTaxAmount(){
-        return calculateSubTotal() * tax;
+        return billingStrategey.calculateTaxAmount(this);
     }
 
-    // A new method to calculate the final total amount.
     public double calculateTotalAmount() {
-        return calculateSubTotal() + calculateTaxAmount();
+        return billingStrategey.calculateTotal(this);
     }
 
-    /**
-     * Generates and prints a formatted bill to the console.
-     * It calculates the subtotal, tax, and final total amount and displays them
-     * along with other relevant appointment details.
-     */
+
+    public CharSequence getMedicineList() {
+        return null;
+    }
+
+    public BillingStrategey getBillingStrategey() {
+        return billingStrategey;
+    }
+
     public void generateBill(){
         this.totalAmount = calculateTotalAmount();
         System.out.println("*****************************************");
         System.out.println("              INVOICE                    ");
         System.out.println("*****************************************");
         System.out.println("Bill ID: " + getBill_id());
-
         System.out.println("Patient Name: " + getPatient().getF_name()+""+getPatient().getL_name());
         System.out.println("Attending Doctor: " + getDoctor().getF_name()+" "+getDoctor().getL_name());
         System.out.println("Date: " + new Date());
@@ -109,6 +139,7 @@ public class Bill extends Appointment {
 
     // Builder pattern (does not alter existing constructors/logic)
     public static class BillBuilder {
+        private BillingStrategey billingStrategy;
         private Date appointment_date;
         private AppointmentStatus status;
         private AppointmentType type;
@@ -118,6 +149,7 @@ public class Bill extends Appointment {
         private Constants constants;
         private double doctor_fees;
         private double totalAmount;
+
 
         public BillBuilder appointment_date(Date appointment_date) {
             this.appointment_date = appointment_date;
@@ -164,8 +196,13 @@ public class Bill extends Appointment {
             return this;
         }
 
+        public  BillBuilder billingStrategey(BillingStrategey billingStrategey) {
+            this.billingStrategy = billingStrategey;
+            return this;
+        }
+
         public Bill build() {
-            return new Bill(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount);
+            return new Bill(this);
         }
     }
 }

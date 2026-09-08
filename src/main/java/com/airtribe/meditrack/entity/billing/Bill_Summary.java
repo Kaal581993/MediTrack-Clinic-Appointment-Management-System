@@ -5,6 +5,7 @@ import com.airtribe.meditrack.entity.appointment.AppointmentStatus;
 import com.airtribe.meditrack.entity.appointment.AppointmentType;
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Patient;
+import com.airtribe.meditrack.strategey.billiing.BillingStrategey;
 
 import java.util.Date;
 import java.util.Scanner;
