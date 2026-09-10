@@ -1,9 +1,8 @@
 package com.airtribe.meditrack.entity.persons;
 
 import com.airtribe.meditrack.entity.MedicalEntity;
-import com.airtribe.meditrack.entity.id_generators.IdGenerators;
-import com.airtribe.meditrack.inter_face.Searchable;
-import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
+import com.airtribe.meditrack.entity.idgenerators.IdGenerators;
+import com.airtribe.meditrack.interfaces.Searchable;
 
 public class Doctor extends Person implements Searchable, MedicalEntity {
 
@@ -14,7 +13,7 @@ public class Doctor extends Person implements Searchable, MedicalEntity {
     public Doctor(int age, String f_name, String l_name, Gender gender) {
         super(age, f_name, l_name, gender);
 
-        id_gen.DocIdGenerator();
+        this.doc_id = id_gen.DocIdGenerator();
     }
 
     public Doctor() {
@@ -54,14 +53,10 @@ public class Doctor extends Person implements Searchable, MedicalEntity {
 
     @Override
     public Doctor clone() {
-        try {
-            Doctor cloned = (Doctor) super.clone();
-            cloned.specialization = this.specialization;
-            cloned.fees = this.fees;
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException("Clone not supported for Doctor", e);
-        }
+        Doctor cloned = (Doctor) super.clone();
+        cloned.specialization = this.specialization;
+        cloned.fees = this.fees;
+        return cloned;
     }
 
     @Override
@@ -108,6 +103,21 @@ public class Doctor extends Person implements Searchable, MedicalEntity {
     @Override
     public String getSearchKey() {
         return getF_name() + " " + getL_name() + " " + specialization.name();
+    }
+
+    @Override
+    public boolean matchesId(int id) {
+        return this.doc_id == id;
+    }
+
+    @Override
+    public boolean matchesName(String name) {
+        if (name == null || name.isEmpty()) {
+            return false;
+        }
+        String lowerName = name.toLowerCase();
+        return getF_name().toLowerCase().contains(lowerName) ||
+                getL_name().toLowerCase().contains(lowerName);
     }
 
     @Override

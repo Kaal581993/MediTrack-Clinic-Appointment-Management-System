@@ -1,6 +1,6 @@
 package com.airtribe.meditrack.entity.persons;
 
-import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
+import com.airtribe.meditrack.entity.idgenerators.IdGenerators;
 import com.airtribe.meditrack.interfaces.Searchable;
 
 import java.util.Objects;
@@ -49,6 +49,22 @@ public class Patient extends Person implements Cloneable, Searchable {
             cloned.medical_history = this.medical_history;
         }
         return cloned;
+    }
+
+    @Override
+    public boolean matches(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return false;
+        }
+        String term = searchTerm.toLowerCase();
+        return getF_name().toLowerCase().contains(term) ||
+                getL_name().toLowerCase().contains(term) ||
+                medical_history.toLowerCase().contains(term);
+    }
+
+    @Override
+    public String getSearchKey() {
+        return getF_name() + " " + getL_name() + " " + medical_history;
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.airtribe.meditrack.entity.appointment;
 import com.airtribe.meditrack.entity.Constants;
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Patient;
-import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
+import com.airtribe.meditrack.entity.idgenerators.IdGenerators;
 
 import java.util.Date;
 
