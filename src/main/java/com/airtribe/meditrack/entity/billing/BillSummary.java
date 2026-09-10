@@ -5,7 +5,6 @@ import com.airtribe.meditrack.entity.appointment.AppointmentStatus;
 import com.airtribe.meditrack.entity.appointment.AppointmentType;
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Patient;
-import com.airtribe.meditrack.strategey.billiing.BillingStrategey;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -30,7 +29,7 @@ import java.util.Scanner;
  * its own state</em> (the {@code payment} field). Callers must not invoke inherited mutators on a
  * {@code Bill_Summary} instance if full immutability is required.
  */
-public final class Bill_Summary extends Bill {
+public final class BillSummary extends Bill {
 
     /**
      * The payment associated with this bill summary.
@@ -46,7 +45,7 @@ public final class Bill_Summary extends Bill {
      * @param payment optional payment attached to this summary;
      * {@code null} if not yet paid
      */
-    public Bill_Summary(
+    public BillSummary(
             Date appointment_date,
             AppointmentStatus status,
             AppointmentType type,
@@ -75,7 +74,7 @@ public final class Bill_Summary extends Bill {
      *
      * @param payment optional payment attached to this summary; {@code null} if not yet paid
      */
-    public Bill_Summary(
+    public BillSummary(
             Date appointment_date,
             AppointmentStatus status,
             AppointmentType type,
@@ -232,8 +231,8 @@ public final class Bill_Summary extends Bill {
             return this;
         }
 
-        public Bill_Summary build() {
-            return new Bill_Summary(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount, payment);
+        public BillSummary build() {
+            return new BillSummary(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount, payment);
         }
     }
 }

@@ -1,8 +1,12 @@
 package com.airtribe.meditrack.exception;
 
-public class BillNotFoundException extends RuntimeException {
+public class BillNotFoundException extends Exception {
 
-    BillNotFoundException(String message) {
-        throw new RuntimeException(message);
+    public BillNotFoundException(String message) {
+        super(message);
+    }
+
+    public BillNotFoundException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

@@ -1,8 +1,8 @@
 package com.airtribe.meditrack.entity.persons;
 
-import com.airtribe.meditrack.entity.id_generators.IdGenerators;
+import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
 
-public abstract class Person {
+public abstract class Person implements Cloneable {
 
     private int p_id;
     private int age;
@@ -61,6 +61,17 @@ public abstract class Person {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public Person clone() {
+        try {
+            Person clone = (Person) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     // Builder pattern (does not alter existing constructors/logic).

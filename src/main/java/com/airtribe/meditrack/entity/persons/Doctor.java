@@ -1,6 +1,6 @@
 package com.airtribe.meditrack.entity.persons;
 
-import com.airtribe.meditrack.entity.id_generators.IdGenerators;
+import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
 
 public class Doctor extends Person{
 
