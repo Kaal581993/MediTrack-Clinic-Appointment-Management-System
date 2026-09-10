@@ -1,4 +1,4 @@
-package com.airtribe.meditrack.inter_face;
+package com.airtribe.meditrack.interfaces;
 
 import com.airtribe.meditrack.entity.billing.Bill;
 

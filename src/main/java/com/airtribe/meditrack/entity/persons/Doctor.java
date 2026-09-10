@@ -3,6 +3,7 @@ package com.airtribe.meditrack.entity.persons;
 import com.airtribe.meditrack.entity.MedicalEntity;
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
 import com.airtribe.meditrack.inter_face.Searchable;
+import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
 
 public class Doctor extends Person implements Searchable, MedicalEntity {
 
@@ -12,7 +13,8 @@ public class Doctor extends Person implements Searchable, MedicalEntity {
 
     public Doctor(int age, String f_name, String l_name, Gender gender) {
         super(age, f_name, l_name, gender);
-        this.doc_id = id_gen.DocIdGenerator();
+
+        id_gen.DocIdGenerator();
     }
 
     public Doctor() {
@@ -157,4 +159,5 @@ public class Doctor extends Person implements Searchable, MedicalEntity {
             return doctor;
         }
     }
+
 }
