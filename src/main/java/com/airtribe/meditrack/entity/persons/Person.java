@@ -2,7 +2,7 @@ package com.airtribe.meditrack.entity.persons;
 
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
 
-public abstract class Person {
+public abstract class Person implements Cloneable {
 
     private int p_id;
     private int age;
@@ -61,6 +61,44 @@ public abstract class Person {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public Person clone() {
+        try {
+            Person cloned = (Person) super.clone();
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Clone not supported for Person", e);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return p_id == person.p_id &&
+                age == person.age &&
+                gender == person.gender &&
+                java.util.Objects.equals(F_name, person.F_name) &&
+                java.util.Objects.equals(L_name, person.L_name);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(p_id, age, F_name, L_name, gender);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "p_id=" + p_id +
+                ", age=" + age +
+                ", F_name='" + F_name + '\'' +
+                ", L_name='" + L_name + '\'' +
+                ", gender=" + gender +
+                '}';
     }
 
     // Builder pattern (does not alter existing constructors/logic).

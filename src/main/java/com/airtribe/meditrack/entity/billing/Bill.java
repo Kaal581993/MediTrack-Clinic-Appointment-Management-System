@@ -1,12 +1,15 @@
 package com.airtribe.meditrack.entity.billing;
 
+
+
 import com.airtribe.meditrack.entity.Constants;
 import com.airtribe.meditrack.entity.appointment.Appointment;
 import com.airtribe.meditrack.entity.appointment.AppointmentStatus;
 import com.airtribe.meditrack.entity.appointment.AppointmentType;
-import com.airtribe.meditrack.entity.id_generators.IdGenerators;
+import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Patient;
+import com.airtribe.meditrack.exception.InvalidDataException;
 import com.airtribe.meditrack.strategey.billiing.BillingStrategey;
 
 import java.util.Date;
@@ -15,10 +18,10 @@ import java.util.Date;
 
 public class Bill extends Appointment {
     private int bill_id;
-    Constants constants = new Constants();
+
     private double doctor_fees;
 
-   final private double tax = constants.getTAX_RATE();
+    final private double tax = Constants.getTAX_RATE();
     private double totalAmount;
     private BillingStrategey billingStrategey;
     // double appointmentFees;
@@ -26,19 +29,7 @@ public class Bill extends Appointment {
 
     IdGenerators id_gen = IdGenerators.getInstance();
 
-    Bill(
-        Date appointment_date,
-        AppointmentStatus status,
-        AppointmentType type,
-        double appointmentFees,
-        Doctor doctor,
-        Patient patient,
-        Constants constants,
-        double doctor_fees,
-        double totalAmount
-    ) {
-        this(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount, null);
-    }
+
 
     Bill(
         Date appointment_date,
@@ -47,25 +38,44 @@ public class Bill extends Appointment {
         double appointmentFees,
         Doctor doctor,
         Patient patient,
-        Constants constants,
+//        Constants constants,
         double doctor_fees,
         double totalAmount,
         BillingStrategey billingStrategey
     ) {
         super(appointment_date, status, type, appointmentFees, doctor, patient);
+        if(billingStrategey == null){
+            throw new InvalidDataException("Billing strategy is required");
+        }
         this.bill_id = id_gen.BillIdGenerator();
-        this.constants = constants;
+//        this.constants = constants;
         this.doctor_fees = doctor_fees;
         this.totalAmount = totalAmount;
         this.billingStrategey = billingStrategey;
     }
 
+
+    public Bill(Bill other) {
+        super(other); // Call parent copy constructor first
+        // Copy primitive fields
+        this.doctor_fees = other.doctor_fees;
+        this.totalAmount = other.totalAmount;
+        // Generate new bill_id (don't copy - should be unique)
+        this.bill_id = id_gen.BillIdGenerator();
+        // Share BillingStrategy reference (stateless strategy)
+        this.billingStrategey = other.billingStrategey;
+    }
+
+
     private Bill(
         BillBuilder billBuilder
     ) {
         super(billBuilder.appointment_date, billBuilder.status, billBuilder.type, billBuilder.appointmentFees, billBuilder.doctor, billBuilder.patient);
+        if(billBuilder.billingStrategy == null){
+            throw new InvalidDataException("Billing strategy is required");
+        }
         this.bill_id = id_gen.BillIdGenerator();
-        this.constants = billBuilder.constants;
+//        this.constants = billBuilder.constants;
         this.doctor_fees = billBuilder.doctor_fees;
         this.totalAmount = billBuilder.totalAmount;
         this.billingStrategey = billBuilder.billingStrategy;
@@ -75,9 +85,6 @@ public class Bill extends Appointment {
         return bill_id;
     }
 
-    public Constants getConstants() {
-        return constants;
-    }
 
     public double getDoctor_fees() {
         return doctor_fees;
@@ -138,6 +145,8 @@ public class Bill extends Appointment {
 
 
     // Builder pattern (does not alter existing constructors/logic)
+
+
     public static class BillBuilder {
         private BillingStrategey billingStrategy;
         private Date appointment_date;
@@ -202,6 +211,9 @@ public class Bill extends Appointment {
         }
 
         public Bill build() {
+            if(billingStrategy == null){
+                throw new InvalidDataException("Billing strategy is required");
+            }
             return new Bill(this);
         }
     }

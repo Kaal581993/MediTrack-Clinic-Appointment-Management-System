@@ -12,6 +12,8 @@ public class Constants {
     static final private double MEDICINE_TAX=0.1;
     static final private double MEDICINE_INSURANCE_COVERAGE=0.8;
 
+    private static Constants instance = new Constants();
+
 
     public static double getTAX_RATE() {
         return TAX_RATE;
@@ -51,5 +53,9 @@ public class Constants {
 
     public static double getMEDICINE_INSURANCE_COVERAGE() {
         return MEDICINE_INSURANCE_COVERAGE;
+    }
+
+    public static Constants getInstance() {
+        return  Constants.getInstance();
     }
 }

@@ -5,8 +5,9 @@ import com.airtribe.meditrack.entity.persons.Patient;
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
 
 import java.util.Date;
+import java.util.Objects;
 
-public class Appointment {
+public class Appointment implements Cloneable {
 
     private int appointment_id;
     private Date appointment_date;
@@ -59,7 +60,63 @@ public class Appointment {
         return idgen;
     }
 
-    // Builder pattern (does not alter existing constructors/logic)
+    public void setAppointment_id(int appointment_id) {
+        this.appointment_id = appointment_id;
+    }
+
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
+    }
+
+    public void setAppointment_date(Date appointment_date) {
+        this.appointment_date = (appointment_date == null) ? null : new Date(appointment_date.getTime());
+    }
+
+    @Override
+    public Appointment clone() {
+        try {
+            Appointment copy = (Appointment) super.clone();
+            if (this.appointment_date != null) {
+                copy.appointment_date = new Date(this.appointment_date.getTime());
+            }
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Appointment must be cloneable", e);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Appointment)) {
+            return false;
+        }
+        Appointment that = (Appointment) o;
+        return this.appointment_id == that.appointment_id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(appointment_id);
+    }
+
+    @Override
+    public String toString() {
+        String doctorName = (doctor == null) ? "unassigned" : doctor.getF_name() + " " + doctor.getL_name();
+        String patientName = (patient == null) ? "unassigned" : patient.getF_name() + " " + patient.getL_name();
+        return "Appointment{" +
+                "id=" + appointment_id +
+                ", date=" + appointment_date +
+                ", status=" + status +
+                ", type=" + type +
+                ", fees=" + appointmentFees +
+                ", doctor=" + doctorName +
+                ", patient=" + patientName +
+                '}';
+    }
+
   public static class AppointmentBuilder {
         private Date appointment_date;
         private AppointmentStatus status;

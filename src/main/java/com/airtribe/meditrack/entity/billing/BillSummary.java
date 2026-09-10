@@ -30,7 +30,7 @@ import java.util.Scanner;
  * its own state</em> (the {@code payment} field). Callers must not invoke inherited mutators on a
  * {@code Bill_Summary} instance if full immutability is required.
  */
-public final class Bill_Summary extends Bill {
+public final class BillSummary extends Bill {
 
     /**
      * The payment associated with this bill summary.
@@ -43,10 +43,10 @@ public final class Bill_Summary extends Bill {
     /**
      * Constructs an immutable bill summary without an attached payment.
      *
-     * @param payment optional payment attached to this summary;
+     * //@param payment optional payment attached to this summary;
      * {@code null} if not yet paid
      */
-    public Bill_Summary(
+    public BillSummary(
             Date appointment_date,
             AppointmentStatus status,
             AppointmentType type,
@@ -54,7 +54,8 @@ public final class Bill_Summary extends Bill {
             Patient patient,
             Constants constants,
             double doctor_fees,
-            double totalAmount
+            double totalAmount,
+            BillingStrategey billingStrategey
     ) {
         this(
                 appointment_date,
@@ -66,7 +67,8 @@ public final class Bill_Summary extends Bill {
                 constants,
                 doctor_fees,
                 totalAmount,
-                null
+                null,
+                billingStrategey
         );
     }
 
@@ -75,7 +77,7 @@ public final class Bill_Summary extends Bill {
      *
      * @param payment optional payment attached to this summary; {@code null} if not yet paid
      */
-    public Bill_Summary(
+    public BillSummary(
             Date appointment_date,
             AppointmentStatus status,
             AppointmentType type,
@@ -85,7 +87,8 @@ public final class Bill_Summary extends Bill {
             Constants constants,
             double doctor_fees,
             double totalAmount,
-            Payment payment
+            Payment payment,
+            BillingStrategey billingStrategey
     ) {
         super(
                 appointment_date,
@@ -94,9 +97,9 @@ public final class Bill_Summary extends Bill {
                 appointmentFees,
                 doctor,
                 patient,
-                constants,
                 doctor_fees,
-                totalAmount
+                totalAmount,
+                billingStrategey
         );
         this.payment = payment;
     }
@@ -232,8 +235,14 @@ public final class Bill_Summary extends Bill {
             return this;
         }
 
-        public Bill_Summary build() {
-            return new Bill_Summary(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount, payment);
+        public BillSummary build(BillingStrategey billingStrategey) {
+            return new BillSummary(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount, payment, billingStrategey);
         }
+    }
+
+    // Copy constructor for deep copy
+    public BillSummary(BillSummary other) {
+        super((Bill) other); // Cast to Bill to call Bill's copy constructor
+        this.payment = other.payment; // Share reference (immutable Payment)
     }
 }
