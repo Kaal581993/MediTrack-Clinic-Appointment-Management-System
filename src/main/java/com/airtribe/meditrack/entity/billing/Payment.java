@@ -1,9 +1,11 @@
 package com.airtribe.meditrack.entity.billing;
 
 import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
+import com.airtribe.meditrack.interfaces.Payable;
+import java.util.Objects;
 import java.util.Scanner;
 
-public class Payment {
+public class Payment implements Cloneable, Payable {
     private final int paymentId;
     private int transactionId;
     private final double amount;
@@ -24,7 +26,7 @@ public class Payment {
      * For manual payments like cash, it prompts for confirmation.
      * For others, it simulates a validation and processing step.
      */
-    public void processPayment() {
+    private void executePayment() {
         System.out.println("Initializing payment for amount: " + this.amount + " using " + this.paymentMethod);
         boolean success = false;
         switch (this.paymentMethod) {
@@ -88,6 +90,65 @@ public class Payment {
 
     public int getPayment_id() {
         return paymentId;
+    }
+
+    public void refundPayment() {
+        if (this.status == PaymentStatus.COMPLETED) {
+            this.status = PaymentStatus.REFUNDED;
+            System.out.println("Payment refunded for payment ID: " + paymentId);
+        } else {
+            System.out.println("Cannot refund payment with status: " + this.status);
+        }
+    }
+
+    @Override
+    public Payment clone() {
+        try {
+            Payment cloned = (Payment) super.clone();
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Payment must be cloneable", e);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Payment)) return false;
+        Payment payment = (Payment) o;
+        return this.paymentId == payment.paymentId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(paymentId);
+    }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "paymentId=" + paymentId +
+                ", transactionId=" + transactionId +
+                ", amount=" + amount +
+                ", status=" + status +
+                ", paymentMethod=" + paymentMethod +
+                '}';
+    }
+
+    @Override
+    public double processPayment() {
+        executePayment();
+        return this.status == PaymentStatus.COMPLETED ? this.amount : 0.0;
+    }
+
+    @Override
+    public String getPaymentStatus() {
+        return this.status.name();
+    }
+
+    @Override
+    public boolean validatePayment() {
+        return this.amount > 0 && this.paymentMethod != null;
     }
 
     public static class PaymentBuilder {

@@ -286,7 +286,8 @@ public class Main {
                     .patient(bill.getPatient())
                     .doctor_fees(bill.getDoctor_fees())
                     .totalAmount(bill.calculateTotalAmount())
-                    .build(bill.getBillingStrategey());
+                    .billingStrategey(bill.getBillingStrategey())
+                    .build();
 
             summary.processBillPayment();
 

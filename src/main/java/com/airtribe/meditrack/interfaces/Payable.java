@@ -2,7 +2,15 @@ package com.airtribe.meditrack.interfaces;
 
 public interface Payable {
 
-    public double processPayment();
-    public double getPayemtStatus();
-    public boolean validatePayment();
+    default double processPayment() {
+        return 0.0;
+    }
+
+    default String getPaymentStatus() {
+        return "UNKNOWN";
+    }
+
+    default boolean validatePayment() {
+        return true;
+    }
 }

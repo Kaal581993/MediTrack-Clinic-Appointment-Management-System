@@ -18,7 +18,7 @@ public class ConsoleReminderObserver implements AppointmentObserver {
     public void onBooked(Appointment appointment) {
         print("Appointment #" + appointment.getAppointment_id() + " booked for "
                 + patientOf(appointment) + " with Dr. " + doctorOf(appointment)
-                + " on " + DateUtil.format(appointment.getAppointment_date()) + ".");
+                + " on " + DateUtil.formatDate(appointment.getAppointment_date()) + ".");
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ConsoleReminderObserver implements AppointmentObserver {
     @Override
     public void onRescheduled(Appointment appointment) {
         print("Appointment #" + appointment.getAppointment_id() + " for " + patientOf(appointment)
-                + " moved to " + DateUtil.format(appointment.getAppointment_date()) + ".");
+                + " moved to " + DateUtil.formatDate(appointment.getAppointment_date()) + ".");
     }
 
     @Override

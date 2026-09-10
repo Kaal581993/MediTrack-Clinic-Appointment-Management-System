@@ -13,10 +13,11 @@ import com.airtribe.meditrack.exception.InvalidDataException;
 import com.airtribe.meditrack.strategey.billiing.BillingStrategey;
 
 import java.util.Date;
+import java.util.Objects;
 
 // May need to re-visit once with Bill Summari
 
-public class Bill extends Appointment {
+public class Bill extends Appointment implements Cloneable {
     private int bill_id;
 
     private double doctor_fees;
@@ -56,7 +57,14 @@ public class Bill extends Appointment {
 
 
     public Bill(Bill other) {
-        super(other); // Call parent copy constructor first
+        super(
+                other.getAppointment_date(),
+                other.getStatus(),
+                other.getType(),
+                other.getAppointmentFees(),
+                other.getDoctor(),
+                other.getPatient()
+        );
         // Copy primitive fields
         this.doctor_fees = other.doctor_fees;
         this.totalAmount = other.totalAmount;
@@ -119,6 +127,39 @@ public class Bill extends Appointment {
 
     public BillingStrategey getBillingStrategey() {
         return billingStrategey;
+    }
+
+    @Override
+    public Bill clone() {
+        try {
+            Bill cloned = (Bill) super.clone();
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Bill must be cloneable", e);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bill)) return false;
+        Bill bill = (Bill) o;
+        return this.bill_id == bill.bill_id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bill_id);
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "billId=" + bill_id +
+                ", doctorFees=" + doctor_fees +
+                ", totalAmount=" + totalAmount +
+                ", tax=" + tax +
+                '}';
     }
 
     public void generateBill(){

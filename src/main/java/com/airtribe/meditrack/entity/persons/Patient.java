@@ -52,6 +52,25 @@ public class Patient extends Person implements Cloneable, Searchable {
     }
 
     @Override
+    public boolean matches(String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) return false;
+        String term = searchTerm.trim().toLowerCase();
+        
+        // Check if matches ID (as string)
+        if (String.valueOf(pat_id).equals(term) || String.valueOf(getP_id()).equals(term)) {
+            return true;
+        }
+        
+        // Check if matches name
+        return matchesName(term);
+    }
+
+    @Override
+    public String getSearchKey() {
+        return (getF_name() + " " + getL_name()).trim();
+    }
+
+    @Override
     public boolean matchesId(int id) {
         return this.pat_id == id || getP_id() == id;
     }
