@@ -18,7 +18,7 @@ public class BillFactoryImpl implements BillFactory {
                 .appointmentFees(appointment.getAppointmentFees())
                 .doctor(appointment.getDoctor())
                 .patient(appointment.getPatient())
-                .constants(new Constants())
+                .constants(appointment.getConstants())
                 .doctor_fees(appointment.getDoctor().getFees())
                 .totalAmount(0.0)
                 .billingStrategey(billingStrategey)

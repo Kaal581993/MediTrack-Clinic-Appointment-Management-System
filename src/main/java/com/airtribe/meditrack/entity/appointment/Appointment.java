@@ -1,5 +1,6 @@
 package com.airtribe.meditrack.entity.appointment;
 
+import com.airtribe.meditrack.entity.Constants;
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Patient;
 import com.airtribe.meditrack.entity.id_generators.IdGenerators;
@@ -25,6 +26,16 @@ public class Appointment {
         this.type = type;
         this.doctor = doctor;
         this.patient = patient;
+    }
+
+    protected Appointment(Appointment other) {
+        this.appointment_id = idgen.NewAppointmentIdGenerator(); // New ID
+        this.appointment_date = new Date(other.appointment_date.getTime()); // Deep copy Date
+        this.status = other.status; // Enum - safe to copy
+        this.type = other.type; // Enum - safe to copy
+        this.appointmentFees = other.appointmentFees; // Primitive
+        this.doctor = other.doctor; // Share reference (add deep copy if needed)
+        this.patient = other.patient; // Share reference (add deep copy if needed)
     }
 
     public int getAppointment_id() {
@@ -57,6 +68,10 @@ public class Appointment {
 
     public IdGenerators getIdgen() {
         return idgen;
+    }
+
+    public Constants getConstants() {
+        return Constants.getInstance();
     }
 
     // Builder pattern (does not alter existing constructors/logic)

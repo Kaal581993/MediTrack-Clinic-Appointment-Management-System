@@ -2,6 +2,8 @@ package com.airtribe.meditrack.util;
 
 import com.airtribe.meditrack.entity.billing.Bill;
 import com.airtribe.meditrack.entity.billing.Payment;
+import com.airtribe.meditrack.entity.persons.Doctor;
+import com.airtribe.meditrack.entity.persons.Specialization;
 
 public class Validator {
 
@@ -39,6 +41,25 @@ public class Validator {
         return true;
     }
 
-
-
+    public boolean validateDoctor(Doctor doctor) {
+        if (doctor == null) {
+            return false;
+        }
+        if (doctor.getF_name() == null || doctor.getF_name().isEmpty()) {
+            return false;
+        }
+        if (doctor.getL_name() == null || doctor.getL_name().isEmpty()) {
+            return false;
+        }
+        if (doctor.getAge() <= 0 || doctor.getAge() > 120) {
+            return false;
+        }
+        if (doctor.getSpecialization() == null) {
+            return false;
+        }
+        if (doctor.getFees() < 0) {
+            return false;
+        }
+        return true;
+    }
 }

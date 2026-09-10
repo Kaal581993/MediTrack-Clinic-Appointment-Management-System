@@ -43,7 +43,7 @@ public final class Bill_Summary extends Bill {
     /**
      * Constructs an immutable bill summary without an attached payment.
      *
-     * @param payment optional payment attached to this summary;
+     * //@param payment optional payment attached to this summary;
      * {@code null} if not yet paid
      */
     public Bill_Summary(
@@ -52,7 +52,6 @@ public final class Bill_Summary extends Bill {
             AppointmentType type,
             double appointmentFees, Doctor doctor,
             Patient patient,
-            Constants constants,
             double doctor_fees,
             double totalAmount
     ) {
@@ -63,7 +62,6 @@ public final class Bill_Summary extends Bill {
                 appointmentFees,
                 doctor,
                 patient,
-                constants,
                 doctor_fees,
                 totalAmount,
                 null
@@ -82,7 +80,6 @@ public final class Bill_Summary extends Bill {
             double appointmentFees,
             Doctor doctor,
             Patient patient,
-            Constants constants,
             double doctor_fees,
             double totalAmount,
             Payment payment
@@ -94,9 +91,9 @@ public final class Bill_Summary extends Bill {
                 appointmentFees,
                 doctor,
                 patient,
-                constants,
                 doctor_fees,
-                totalAmount
+                totalAmount,
+                null // BillingStrategy - will be set by caller if needed
         );
         this.payment = payment;
     }
@@ -174,7 +171,6 @@ public final class Bill_Summary extends Bill {
         private double appointmentFees;
         private Doctor doctor;
         private Patient patient;
-        private Constants constants;
         private double doctor_fees;
         private double totalAmount;
         private Payment payment;
@@ -209,11 +205,6 @@ public final class Bill_Summary extends Bill {
             return this;
         }
 
-        public BillSummaryBuilder constants(Constants constants) {
-            this.constants = constants;
-            return this;
-        }
-
         public BillSummaryBuilder doctor_fees(double doctor_fees) {
             this.doctor_fees = doctor_fees;
             return this;
@@ -233,7 +224,13 @@ public final class Bill_Summary extends Bill {
         }
 
         public Bill_Summary build() {
-            return new Bill_Summary(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount, payment);
+            return new Bill_Summary(appointment_date, status, type, appointmentFees, doctor, patient, doctor_fees, totalAmount, payment);
         }
+    }
+
+    // Copy constructor for deep copy
+    public Bill_Summary(Bill_Summary other) {
+        super((Bill) other); // Cast to Bill to call Bill's copy constructor
+        this.payment = other.payment; // Share reference (immutable Payment)
     }
 }
