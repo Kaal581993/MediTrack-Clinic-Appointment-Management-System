@@ -19,48 +19,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-/**
- * Menu-driven console UI for the appointment module.
- * <p>
- * Deliberately self-contained: it owns its own {@link Scanner} and
- * {@link AppointmentService}, and exposes a single {@link #start(String[])} entry point.
- * Wiring it into the application's {@code Main} is therefore a one-line call, which
- * keeps this module out of the way of the other modules' menus.
- * <p>
- * Supports the {@code --loadData} command-line argument, which restores persisted
- * appointments from CSV before the menu opens.
- */
 public class AppointmentMenu {
 
     private final AppointmentService service;
     private final Scanner scanner;
 
-    /** In-memory demo roster; replaced by the real registries once those modules land. */
     private final List<Doctor> doctors = new ArrayList<>();
     private final List<Patient> patients = new ArrayList<>();
 
-    /** Creates a menu backed by a fresh service using the default storage path. */
     public AppointmentMenu() {
         this(new AppointmentService(), new Scanner(System.in));
     }
 
-    /**
-     * @param service the service to drive
-     * @param scanner the input source
-     */
     public AppointmentMenu(AppointmentService service, Scanner scanner) {
         this.service = service;
         this.scanner = scanner;
         this.service.register(new ConsoleReminderObserver());
     }
 
-    /**
-     * Entry point for the appointment module.
-     * <p>
-     * Call from {@code Main} as {@code AppointmentMenu.start(args);}.
-     *
-     * @param args command-line arguments; {@code --loadData} restores persisted data
-     */
     public static void start(String[] args) {
         AppointmentMenu menu = new AppointmentMenu();
         menu.seedDemoPeople();
@@ -70,7 +46,6 @@ public class AppointmentMenu {
         menu.run();
     }
 
-    /** Standalone entry point so the module can be demoed on its own. */
     public static void main(String[] args) {
         start(args);
     }
@@ -96,7 +71,6 @@ public class AppointmentMenu {
         }
     }
 
-    /** Adds a few doctors and patients so the menu is usable without the other modules. */
     public void seedDemoPeople() {
         Doctor.DoctorBuilder cardio = Doctor.builder();
         cardio.f_name("Asha").l_name("Rao").age(44).gender(Gender.FEMALE);
@@ -115,7 +89,6 @@ public class AppointmentMenu {
         patients.add(second.medical_history("Asthma").build());
     }
 
-    /** Runs the menu loop until the user chooses to exit. */
     public void run() {
         boolean running = true;
         while (running) {

@@ -17,20 +17,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Manual test runner for the appointment module — no JUnit, as the project requires.
- * <p>
- * Run with:
- * <pre>java -cp out com.airtribe.meditrack.test.AppointmentTestRunner</pre>
- * Prints PASS/FAIL per assertion and exits with a non-zero status if anything failed,
- * so it can be wired into CI later.
- */
 public class AppointmentTestRunner {
 
     private static int passed;
     private static int failed;
 
-    /** One day in milliseconds, used to build future dates relative to now. */
     private static final long ONE_DAY = 24L * 60 * 60 * 1000;
 
     public static void main(String[] args) {
@@ -60,9 +51,6 @@ public class AppointmentTestRunner {
         }
     }
 
-    // ------------------------------------------------------------------
-    // Test cases
-    // ------------------------------------------------------------------
 
     private static void testBookAndRetrieve() {
         section("Booking and retrieval");
@@ -232,7 +220,6 @@ public class AppointmentTestRunner {
         check("nested Date is deep-copied, not shared",
                 copy.getAppointment_date() != original.getAppointment_date());
 
-        // The decisive check: mutating the copy's nested date must not touch the original.
         Date originalDate = new Date(original.getAppointment_date().getTime());
         copy.setAppointment_date(future(9));
         check("mutating the copy leaves the original date unchanged",
@@ -245,7 +232,7 @@ public class AppointmentTestRunner {
     private static void testObserverFires() {
         section("Observer pattern");
         AppointmentService service = new AppointmentService();
-        final int[] counts = new int[4]; // booked, cancelled, rescheduled, completed
+        final int[] counts = new int[4];
 
         service.register(new AppointmentObserver() {
             @Override public void onBooked(Appointment a) { counts[0]++; }
@@ -289,7 +276,6 @@ public class AppointmentTestRunner {
         check("appointments per doctor counts Asha's two", perDoctor.get(asha.getP_id()) == 2L);
         check("cancelled excluded from per-doctor count", perDoctor.get(vikram.getP_id()) == 1L);
 
-        // Live: 500 + 500 + 100 = 1100 across 3 appointments.
         check("total revenue excludes cancelled", service.totalRevenue() == 1100.0);
         check("average fee excludes cancelled",
                 Math.abs(service.averageFee() - (1100.0 / 3)) < 0.0001);
@@ -354,27 +340,17 @@ public class AppointmentTestRunner {
                 reader.viewAppointment(second.getAppointment_id()).getStatus()
                         == AppointmentStatus.CANCELLED);
 
-        // Loading into a service that already has data replaces it rather than duplicating.
         reader.loadFromFile();
         check("reloading does not duplicate rows", reader.listAll().size() == 2);
 
         new File(path).delete();
     }
 
-    // ------------------------------------------------------------------
-    // Tiny assertion helpers (no JUnit, by project requirement)
-    // ------------------------------------------------------------------
 
     private static void section(String title) {
         System.out.println("-- " + title + " --");
     }
 
-    /**
-     * Records and prints the outcome of one assertion.
-     *
-     * @param description what is being asserted
-     * @param condition   the result of the assertion
-     */
     private static void check(String description, boolean condition) {
         if (condition) {
             passed++;
@@ -385,10 +361,6 @@ public class AppointmentTestRunner {
         }
     }
 
-    /**
-     * @param action the code expected to reject its input
-     * @return {@code true} when the action threw {@link IllegalArgumentException}
-     */
     private static boolean throwsIllegalArgument(Runnable action) {
         try {
             action.run();
