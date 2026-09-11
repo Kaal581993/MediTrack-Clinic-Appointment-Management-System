@@ -26,7 +26,7 @@ public class Payment implements Cloneable, Payable {
      * For manual payments like cash, it prompts for confirmation.
      * For others, it simulates a validation and processing step.
      */
-    private void executePayment() {
+    public void executePayment() {
         System.out.println("Initializing payment for amount: " + this.amount + " using " + this.paymentMethod);
         boolean success = false;
         switch (this.paymentMethod) {

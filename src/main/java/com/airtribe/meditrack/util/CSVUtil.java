@@ -110,4 +110,52 @@ public class CSVUtil {
         }
         return value;
     }
+
+    /**
+     * Joins an array of strings into a single CSV row.
+     *
+     * @param values the array of values to join
+     * @return CSV row string
+     */
+    public static String joinRow(String[] values) {
+        if (values == null) {
+            return "";
+        }
+        return String.join(",", values);
+    }
+
+    /**
+     * Splits a CSV row into an array of strings.
+     *
+     * @param row the CSV row string
+     * @return array of values
+     */
+    public static String[] splitRow(String row) {
+        if (row == null || row.trim().isEmpty()) {
+            return new String[0];
+        }
+        return row.split(",");
+    }
+
+    /**
+     * Writes lines to a CSV file. Alias for writeCSV.
+     *
+     * @param filePath the path to the CSV file
+     * @param lines list of string arrays representing CSV rows
+     * @throws IOException if file writing fails
+     */
+    public static void writeLines(String filePath, List<String[]> lines) throws IOException {
+        writeCSV(filePath, lines);
+    }
+
+    /**
+     * Reads lines from a CSV file. Alias for readCSV.
+     *
+     * @param filePath the path to the CSV file
+     * @return list of string arrays representing CSV rows
+     * @throws IOException if file reading fails
+     */
+    public static List<String[]> readLines(String filePath) throws IOException {
+        return readCSV(filePath);
+    }
 }

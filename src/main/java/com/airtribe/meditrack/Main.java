@@ -15,7 +15,7 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final DataStore<Doctor> doctorStore = new DataStore<>();
 
-     static void main() {
+    public static void main(String[] args) {
         seedInitialDoctors();
 
         boolean running = true;

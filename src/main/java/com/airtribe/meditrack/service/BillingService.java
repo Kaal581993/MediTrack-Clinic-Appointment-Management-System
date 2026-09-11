@@ -29,17 +29,17 @@ public class BillingService {
     public Bill createBill(Appointment appointment, BillingStrategey billingStrategey) {
         Bill bill = billFactory.createStandardBill(appointment);
         // Override the strategy with the provided one
-        return new Bill(
-                appointment.getAppointment_date(),
-                appointment.getStatus(),
-                appointment.getType(),
-                appointment.getAppointmentFees(),
-                appointment.getDoctor(),
-                appointment.getPatient(),
-                0.0, // doctor_fees - will be calculated
-                0.0, // totalAmount - will be calculated
-                billingStrategey
-        );
+        return new Bill.BillBuilder()
+                .appointment_date(appointment.getAppointment_date())
+                .status(appointment.getStatus())
+                .type(appointment.getType())
+                .appointmentFees(appointment.getAppointmentFees())
+                .doctor(appointment.getDoctor())
+                .patient(appointment.getPatient())
+                .doctor_fees(0.0) // will be calculated
+                .totalAmount(0.0) // will be calculated
+                .billingStrategey(billingStrategey)
+                .build();
     }
 
     public Bill createStandardBill(Appointment appointment) {
@@ -65,19 +65,19 @@ public class BillingService {
         payment.executePayment();
 
         if (payment.getStatus() == PaymentStatus.COMPLETED) {
-            BillSummary summary = new BillSummary(
-                    bill.getAppointment_date(),
-                    bill.getStatus(),
-                    bill.getType(),
-                    bill.getAppointmentFees(),
-                    bill.getDoctor(),
-                    bill.getPatient(),
-                    null, // constants
-                    bill.getDoctor_fees(),
-                    bill.calculateTotalAmount(),
-                    payment,
-                    bill.getBillingStrategey()
-            );
+            BillSummary summary = new BillSummary.BillSummaryBuilder()
+                    .appointment_date(bill.getAppointment_date())
+                    .status(bill.getStatus())
+                    .type(bill.getType())
+                    .appointmentFees(bill.getAppointmentFees())
+                    .doctor(bill.getDoctor())
+                    .patient(bill.getPatient())
+                    .constants(null) // constants
+                    .doctor_fees(bill.getDoctor_fees())
+                    .totalAmount(bill.calculateTotalAmount())
+                    .payment(payment)
+                    .billingStrategey(bill.getBillingStrategey())
+                    .build();
             billSummaryStore.put(billId, summary);
         }
 

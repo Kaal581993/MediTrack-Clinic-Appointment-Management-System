@@ -46,6 +46,18 @@ public class DateUtil {
     }
 
     /**
+     * Parses a string to a Date using the default date format.
+     * Alias for parseDate.
+     *
+     * @param dateString the date string to parse
+     * @return parsed Date
+     * @throws ParseException if parsing fails
+     */
+    public static Date parse(String dateString) throws ParseException {
+        return parseDate(dateString);
+    }
+
+    /**
      * Parses a string to a Date using the specified format.
      *
      * @param dateString the date string to parse
@@ -135,6 +147,35 @@ public class DateUtil {
             return false;
         }
         return date1.after(date2);
+    }
+
+    /**
+     * Checks if a date is in the future (after current time).
+     *
+     * @param date the date to check
+     * @return true if the date is in the future
+     */
+    public static boolean isFuture(Date date) {
+        if (date == null) {
+            return false;
+        }
+        return date.after(new Date());
+    }
+
+    /**
+     * Checks if two dates are in the same time slot (same day and hour).
+     *
+     * @param date1 the first date
+     * @param date2 the second date
+     * @return true if both dates are in the same time slot
+     */
+    public static boolean isSameSlot(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            return false;
+        }
+        String slot1 = formatDate(date1, "yyyy-MM-dd HH");
+        String slot2 = formatDate(date2, "yyyy-MM-dd HH");
+        return slot1.equals(slot2);
     }
 
     /**

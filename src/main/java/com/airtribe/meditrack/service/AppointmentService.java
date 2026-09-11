@@ -8,7 +8,7 @@ import com.airtribe.meditrack.entity.appointment.AppointmentType;
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Patient;
 import com.airtribe.meditrack.exception.AppointmentNotFoundException;
-import com.airtribe.meditrack.inter_face.Searchable;
+import com.airtribe.meditrack.interfaces.Searchable;
 import com.airtribe.meditrack.util.AppointmentCSVUtil;
 import com.airtribe.meditrack.util.DateUtil;
 import com.airtribe.meditrack.util.Validator;
@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AppointmentService implements Searchable<Appointment> {
+public class AppointmentService implements Searchable {
 
     private final Map<Integer, Appointment> appointments = new LinkedHashMap<>();
 
@@ -84,7 +84,7 @@ public class AppointmentService implements Searchable<Appointment> {
         Validator.validateAppointment(date, type, fees, doctor, patient);
         if (isDoctorBusy(doctor, date)) {
             throw new IllegalArgumentException("Dr. " + doctor.getF_name() + " " + doctor.getL_name()
-                    + " already has an appointment at " + DateUtil.format(date) + ".");
+                    + " already has an appointment at " + DateUtil.formatDate(date) + ".");
         }
 
         Appointment appointment = new Appointment.AppointmentBuilder()
@@ -139,11 +139,11 @@ public class AppointmentService implements Searchable<Appointment> {
         }
         if (!DateUtil.isFuture(newDate)) {
             throw new IllegalArgumentException(
-                    "New appointment date must be in the future, but was: " + DateUtil.format(newDate));
+                    "New appointment date must be in the future, but was: " + DateUtil.formatDate(newDate));
         }
         if (isDoctorBusyExcluding(appointment.getDoctor(), newDate, appointmentId)) {
             throw new IllegalArgumentException("That doctor already has an appointment at "
-                    + DateUtil.format(newDate) + ".");
+                    + DateUtil.formatDate(newDate) + ".");
         }
 
         appointment.setAppointment_date(newDate);
@@ -226,7 +226,7 @@ public class AppointmentService implements Searchable<Appointment> {
     }
 
 
-    @Override
+
     public List<Appointment> searchById(int id) {
         Appointment appointment = appointments.get(id);
         List<Appointment> result = new ArrayList<>();
@@ -236,9 +236,28 @@ public class AppointmentService implements Searchable<Appointment> {
         return result;
     }
 
-    @Override
     public List<Appointment> searchAll() {
         return listAll();
+    }
+
+    @Override
+    public boolean matches(String searchTerm) {
+        return !searchAppointment(searchTerm).isEmpty();
+    }
+
+    @Override
+    public String getSearchKey() {
+        return "appointment";
+    }
+
+    @Override
+    public boolean matchesId(int id) {
+        return appointments.containsKey(id);
+    }
+
+    @Override
+    public boolean matchesName(String name) {
+        return !searchAppointment(name).isEmpty();
     }
 
 
@@ -323,5 +342,13 @@ public class AppointmentService implements Searchable<Appointment> {
 
     public void clear() {
         appointments.clear();
+    }
+
+    public boolean exists(int appointmentId) {
+        return appointments.containsKey(appointmentId);
+    }
+
+    public int count() {
+        return appointments.size();
     }
 }

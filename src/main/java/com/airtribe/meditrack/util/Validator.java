@@ -5,7 +5,7 @@ import com.airtribe.meditrack.entity.billing.Bill;
 import com.airtribe.meditrack.entity.billing.Payment;
 import com.airtribe.meditrack.entity.persons.Patient;
 import com.airtribe.meditrack.entity.persons.Doctor;
-import com.airtribe.meditrack.entity.persons.Specialization;
+
 
 import java.util.Date;
 
