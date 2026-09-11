@@ -91,14 +91,18 @@ public class Doctor extends Person implements Searchable {
             return false;
         }
         String term = searchTerm.toLowerCase();
-        return getF_name().toLowerCase().contains(term) ||
-                getL_name().toLowerCase().contains(term) ||
-                specialization.name().toLowerCase().contains(term);
+        return (getF_name() != null && getF_name().toLowerCase().contains(term)) ||
+                (getL_name() != null && getL_name().toLowerCase().contains(term)) ||
+                (specialization != null && specialization.name().toLowerCase().contains(term));
     }
 
     @Override
     public String getSearchKey() {
-        return getF_name() + " " + getL_name() + " " + specialization.name();
+        StringBuilder key = new StringBuilder();
+        if (getF_name() != null) key.append(getF_name());
+        if (getL_name() != null) { if (key.length() > 0) key.append(' '); key.append(getL_name()); }
+        if (specialization != null) { if (key.length() > 0) key.append(' '); key.append(specialization.name()); }
+        return key.toString();
     }
 
     @Override

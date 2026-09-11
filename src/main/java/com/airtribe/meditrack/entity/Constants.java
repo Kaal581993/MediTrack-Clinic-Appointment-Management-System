@@ -1,7 +1,7 @@
 package com.airtribe.meditrack.entity;
 
 public class Constants {
-    static final private double TAX_RATE=0.8;
+    static final private double TAX_RATE=0.08;
     static final private String BILL_FILE_PATH="/bill/bill.csv";
     static final private String PATIENT_MEDICAL_FILE_PATH="/medical_file/medical_file.csv";
     static final private double INSURANCE_COVERAGE=0.8;

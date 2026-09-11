@@ -44,10 +44,9 @@ public class Patient extends Person implements Cloneable, Searchable {
     @Override
     public Patient clone() {
         Patient cloned = (Patient) super.clone();
-        // New String reference for deep copy isolation
-        if (this.medical_history != null) {
-            cloned.medical_history = this.medical_history;
-        }
+        // Strings are immutable, but create a distinct reference so the clone
+        // is fully isolated from the original (true deep-copy semantics).
+        cloned.medical_history = (this.medical_history == null) ? null : new String(this.medical_history);
         return cloned;
     }
 
