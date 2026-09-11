@@ -1,4 +1,4 @@
-package com.airtribe.meditrack.entity.idGenerators;
+package com.airtribe.meditrack.entity.idgenerators;
 
 public class IdGenerators {
     private int p_id = 0;

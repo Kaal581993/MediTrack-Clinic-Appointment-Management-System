@@ -1,6 +1,6 @@
 package com.airtribe.meditrack.entity.persons;
 
-import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
+import com.airtribe.meditrack.entity.idgenerators.IdGenerators;
 import com.airtribe.meditrack.interfaces.Searchable;
 
 import java.util.Objects;

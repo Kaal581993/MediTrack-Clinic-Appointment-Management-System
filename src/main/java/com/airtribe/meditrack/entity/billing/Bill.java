@@ -6,7 +6,7 @@ import com.airtribe.meditrack.entity.Constants;
 import com.airtribe.meditrack.entity.appointment.Appointment;
 import com.airtribe.meditrack.entity.appointment.AppointmentStatus;
 import com.airtribe.meditrack.entity.appointment.AppointmentType;
-import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
+import com.airtribe.meditrack.entity.idgenerators.IdGenerators;
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Patient;
 import com.airtribe.meditrack.exception.InvalidDataException;
@@ -122,7 +122,8 @@ public class Bill extends Appointment implements Cloneable {
 
 
     public CharSequence getMedicineList() {
-        return null;
+        // Return a placeholder medicine list - can be enhanced with actual medicine data
+        return "No medicines prescribed";
     }
 
     public BillingStrategey getBillingStrategey() {

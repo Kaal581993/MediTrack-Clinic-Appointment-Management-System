@@ -1,20 +1,15 @@
 package com.airtribe.meditrack.entity.persons;
 
-import com.airtribe.meditrack.entity.MedicalEntity;
-import com.airtribe.meditrack.entity.id_generators.IdGenerators;
-import com.airtribe.meditrack.inter_face.Searchable;
-import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
+import com.airtribe.meditrack.entity.idgenerators.IdGenerators;
+import com.airtribe.meditrack.interfaces.Searchable;
 
-public class Doctor extends Person implements Searchable, MedicalEntity {
+public class Doctor extends Person implements Searchable {
 
     IdGenerators id_gen = IdGenerators.getInstance();
-    private String entityId;
-    private String name;
 
     public Doctor(int age, String f_name, String l_name, Gender gender) {
         super(age, f_name, l_name, gender);
-
-        id_gen.DocIdGenerator();
+        this.doc_id = id_gen.DocIdGenerator();
     }
 
     public Doctor() {
@@ -54,14 +49,10 @@ public class Doctor extends Person implements Searchable, MedicalEntity {
 
     @Override
     public Doctor clone() {
-        try {
-            Doctor cloned = (Doctor) super.clone();
-            cloned.specialization = this.specialization;
-            cloned.fees = this.fees;
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException("Clone not supported for Doctor", e);
-        }
+        Doctor cloned = (Doctor) super.clone();
+        cloned.specialization = this.specialization;
+        cloned.fees = this.fees;
+        return cloned;
     }
 
     @Override
@@ -111,23 +102,15 @@ public class Doctor extends Person implements Searchable, MedicalEntity {
     }
 
     @Override
-    public String getEntityId() {
-        return entityId;
+    public boolean matchesId(int id) {
+        return this.doc_id == id || getP_id() == id;
     }
 
     @Override
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
+    public boolean matchesName(String name) {
+        if (name == null) return false;
+        String fullName = (getF_name() + " " + getL_name()).trim().toLowerCase();
+        return fullName.contains(name.toLowerCase().trim());
     }
 
     // Builder pattern (does not alter existing constructors/logic)

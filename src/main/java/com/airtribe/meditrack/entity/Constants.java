@@ -56,6 +56,6 @@ public class Constants {
     }
 
     public static Constants getInstance() {
-        return  Constants.getInstance();
+        return instance;
     }
 }

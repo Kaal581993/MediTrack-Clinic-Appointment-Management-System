@@ -1,6 +1,6 @@
 package com.airtribe.meditrack.entity.billing;
 
-import com.airtribe.meditrack.entity.idGenerators.IdGenerators;
+import com.airtribe.meditrack.entity.idgenerators.IdGenerators;
 import com.airtribe.meditrack.interfaces.Payable;
 import java.util.Objects;
 import java.util.Scanner;
