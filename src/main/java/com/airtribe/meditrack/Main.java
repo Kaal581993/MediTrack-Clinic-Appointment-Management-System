@@ -2,7 +2,7 @@ package com.airtribe.meditrack;
 
 import com.airtribe.meditrack.entity.persons.Doctor;
 import com.airtribe.meditrack.entity.persons.Gender;
-import com.airtribe.meditrack.service.PatientService;
+
 import com.airtribe.meditrack.ui.AppointmentMenu;
 import com.airtribe.meditrack.ui.BillingMenu;
 import com.airtribe.meditrack.ui.DoctorMenu;
@@ -15,7 +15,7 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final DataStore<Doctor> doctorStore = new DataStore<>();
 
-    public static void main(String[] args) {
+     static void main() {
         seedInitialDoctors();
 
         boolean running = true;
