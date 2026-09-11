@@ -124,6 +124,30 @@ public class Doctor extends Person implements Searchable {
         private Specialization specialization;
         private double fees;
 
+        @Override
+        public DoctorBuilder age(int age) {
+            this.age = age;
+            return this;
+        }
+
+        @Override
+        public DoctorBuilder f_name(String f_name) {
+            this.f_name = f_name;
+            return this;
+        }
+
+        @Override
+        public DoctorBuilder l_name(String l_name) {
+            this.l_name = l_name;
+            return this;
+        }
+
+        @Override
+        public DoctorBuilder gender(Gender gender) {
+            this.gender = gender;
+            return this;
+        }
+
         public DoctorBuilder specialization(Specialization specialization) {
             this.specialization = specialization;
             return this;

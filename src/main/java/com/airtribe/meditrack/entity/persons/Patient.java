@@ -114,6 +114,30 @@ public class Patient extends Person implements Cloneable, Searchable {
         }
 
         @Override
+        public PatientBuilder f_name(String f_name) {
+            this.f_name = f_name;
+            return this;
+        }
+
+        @Override
+        public PatientBuilder l_name(String l_name) {
+            this.l_name = l_name;
+            return this;
+        }
+
+        @Override
+        public PatientBuilder age(int age) {
+            this.age = age;
+            return this;
+        }
+
+        @Override
+        public PatientBuilder gender(Gender gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        @Override
         public Patient build() {
             return new Patient(age, f_name, l_name, gender, medical_history);
         }

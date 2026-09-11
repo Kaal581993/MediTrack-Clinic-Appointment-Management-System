@@ -132,12 +132,7 @@ public class Bill extends Appointment implements Cloneable {
 
     @Override
     public Bill clone() {
-        try {
-            Bill cloned = (Bill) super.clone();
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError("Bill must be cloneable", e);
-        }
+        return (Bill) super.clone();
     }
 
     @Override

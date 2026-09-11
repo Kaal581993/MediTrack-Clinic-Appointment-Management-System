@@ -161,7 +161,7 @@ public class AppointmentMenu {
                 : AppointmentType.INITIAL;
 
         System.out.print("Date and time (" + Constants.DATE_FORMAT + "): ");
-        Date date = DateUtil.parse(scanner.nextLine());
+        Date date = DateUtil.parseDateInput(scanner.nextLine());
 
         Appointment appointment = service.bookAppointment(date, type, doctor, patient);
         System.out.println("Booked: " + appointment);
@@ -201,9 +201,9 @@ public class AppointmentMenu {
             }
             case "c" -> {
                 System.out.print("From (" + Constants.DATE_FORMAT + "): ");
-                Date from = DateUtil.parse(scanner.nextLine());
+                Date from = DateUtil.parseDateInput(scanner.nextLine());
                 System.out.print("To (" + Constants.DATE_FORMAT + "): ");
-                results = service.searchAppointment(from, DateUtil.parse(scanner.nextLine()));
+                results = service.searchAppointment(from, DateUtil.parseDateInput(scanner.nextLine()));
             }
             default -> {
                 System.out.println("Unknown search option.");
@@ -227,7 +227,7 @@ public class AppointmentMenu {
         System.out.print("Appointment id to reschedule: ");
         int id = readInt();
         System.out.print("New date and time (" + Constants.DATE_FORMAT + "): ");
-        service.rescheduleAppointment(id, DateUtil.parse(scanner.nextLine()));
+        service.rescheduleAppointment(id, DateUtil.parseDateInput(scanner.nextLine()));
     }
 
     private void completeAppointment() {

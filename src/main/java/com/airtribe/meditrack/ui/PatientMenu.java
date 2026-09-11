@@ -86,11 +86,11 @@ public class PatientMenu {
         if (history.isEmpty()) history = "None";
 
         Patient patient = Patient.builder()
+                .medical_history(history)
                 .f_name(fName)
                 .l_name(lName)
                 .age(age)
                 .gender(gender)
-                .medical_history(history)
                 .build();
 
         Patient saved = patientService.registerPatient(patient);

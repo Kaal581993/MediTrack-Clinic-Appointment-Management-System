@@ -20,6 +20,26 @@ public class DateUtil {
     }
 
     /**
+     * Alias for {@link #formatDate(Date)} used by validation code.
+     *
+     * @param date the date to format
+     * @return formatted date string
+     */
+    public static String format(Date date) {
+        return formatDate(date);
+    }
+
+    /**
+     * Formats a Date using the default date-time format.
+     *
+     * @param date the date to format
+     * @return formatted date-time string
+     */
+    public static String formatDateTime(Date date) {
+        return formatDate(date, DEFAULT_DATETIME_FORMAT);
+    }
+
+    /**
      * Formats a Date to a string using the specified format.
      *
      * @param date the date to format
@@ -55,6 +75,33 @@ public class DateUtil {
      */
     public static Date parse(String dateString) throws ParseException {
         return parseDate(dateString);
+    }
+
+    /**
+     * Parses a date-time string using the default date-time format.
+     *
+     * @param dateString the date-time string to parse
+     * @return parsed Date
+     * @throws ParseException if parsing fails
+     */
+    public static Date parseDateTime(String dateString) throws ParseException {
+        return parseDate(dateString, DEFAULT_DATETIME_FORMAT);
+    }
+
+    /**
+     * Parses date input from an interactive caller and converts parse failures into
+     * an unchecked exception suitable for menu-level validation.
+     *
+     * @param dateString the date string to parse
+     * @return parsed Date
+     * @throws IllegalArgumentException if parsing fails
+     */
+    public static Date parseDateInput(String dateString) {
+        try {
+            return parseDateTime(dateString);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid date-time. Expected " + DEFAULT_DATETIME_FORMAT + ".", e);
+        }
     }
 
     /**
@@ -122,7 +169,7 @@ public class DateUtil {
     }
 
     /**
-     * Checks if a date is before another date.
+     3* Checks if a date is before another date.
      *
      * @param date1 the first date
      * @param date2 the second date

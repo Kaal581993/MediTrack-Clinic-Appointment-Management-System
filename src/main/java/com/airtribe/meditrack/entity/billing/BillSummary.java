@@ -258,11 +258,7 @@ public final class BillSummary extends Bill implements Cloneable {
 
     @Override
     public BillSummary clone() {
-        try {
-            return (BillSummary) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError("BillSummary must be cloneable", e);
-        }
+        return (BillSummary) super.clone();
     }
 
     @Override

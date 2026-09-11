@@ -22,7 +22,7 @@ public class AppointmentCSVUtil {
         Patient patient = appointment.getPatient();
         String[] row = new String[]{
                 String.valueOf(appointment.getAppointment_id()),
-                DateUtil.formatDate(appointment.getAppointment_date()),
+                DateUtil.formatDateTime(appointment.getAppointment_date()),
                 String.valueOf(appointment.getStatus()),
                 String.valueOf(appointment.getType()),
                 String.valueOf(appointment.getAppointmentFees()),
@@ -99,7 +99,7 @@ public class AppointmentCSVUtil {
             }
 
             Appointment appointment = new Appointment.AppointmentBuilder()
-                    .appointment_date(DateUtil.parse(fields[1]))
+                    .appointment_date(DateUtil.parseDateTime(fields[1]))
                     .status(status)
                     .type(type)
                     .appointmentFees(fees)
