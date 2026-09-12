@@ -1,6 +1,5 @@
 package com.airtribe.meditrack.entity.factory;
 
-import com.airtribe.meditrack.entity.Constants;
 import com.airtribe.meditrack.entity.appointment.Appointment;
 import com.airtribe.meditrack.entity.billing.Bill;
 import com.airtribe.meditrack.strategey.billiing.BillingStrategey;
@@ -18,7 +17,6 @@ public class BillFactoryImpl implements BillFactory {
                 .appointmentFees(appointment.getAppointmentFees())
                 .doctor(appointment.getDoctor())
                 .patient(appointment.getPatient())
-                .constants(appointment.getConstants())
                 .doctor_fees(appointment.getDoctor().getFees())
                 .totalAmount(0.0)
                 .billingStrategey(billingStrategey)

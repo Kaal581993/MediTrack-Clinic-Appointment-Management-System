@@ -45,7 +45,7 @@ public class Validator {
             return false;
         }
 
-        if(bill.getMedicineList().isEmpty()){
+        if(bill.getMedicineList() == null || bill.getMedicineList().toString().trim().isEmpty()){
             return false;
         }
 

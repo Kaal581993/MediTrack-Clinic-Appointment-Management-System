@@ -4,7 +4,7 @@ public enum Specialization {
     MBBS,
     ORTHOPEDIC,
     PEDIATRIC,
-    OPTOMETERIST,
+    OPTOMETRIST,
     PHYSIO,
     DENTIST
 }

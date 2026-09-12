@@ -53,7 +53,6 @@ public final class BillSummary extends Bill implements Cloneable {
             AppointmentType type,
             double appointmentFees, Doctor doctor,
             Patient patient,
-            Constants constants,
             double doctor_fees,
             double totalAmount,
             BillingStrategey billingStrategey
@@ -65,7 +64,6 @@ public final class BillSummary extends Bill implements Cloneable {
                 appointmentFees,
                 doctor,
                 patient,
-                constants,
                 doctor_fees,
                 totalAmount,
                 null,
@@ -85,7 +83,6 @@ public final class BillSummary extends Bill implements Cloneable {
             double appointmentFees,
             Doctor doctor,
             Patient patient,
-            Constants constants,
             double doctor_fees,
             double totalAmount,
             Payment payment,
@@ -98,6 +95,7 @@ public final class BillSummary extends Bill implements Cloneable {
                 appointmentFees,
                 doctor,
                 patient,
+                null,
                 doctor_fees,
                 totalAmount,
                 billingStrategey
@@ -178,7 +176,6 @@ public final class BillSummary extends Bill implements Cloneable {
         private double appointmentFees;
         private Doctor doctor;
         private Patient patient;
-        private Constants constants;
         private double doctor_fees;
         private double totalAmount;
         private Payment payment;
@@ -214,11 +211,6 @@ public final class BillSummary extends Bill implements Cloneable {
             return this;
         }
 
-        public BillSummaryBuilder constants(Constants constants) {
-            this.constants = constants;
-            return this;
-        }
-
         public BillSummaryBuilder doctor_fees(double doctor_fees) {
             this.doctor_fees = doctor_fees;
             return this;
@@ -246,7 +238,7 @@ public final class BillSummary extends Bill implements Cloneable {
             if(billingStrategey == null){
                 throw new com.airtribe.meditrack.exception.InvalidDataException("Billing strategy is required");
             }
-            return new BillSummary(appointment_date, status, type, appointmentFees, doctor, patient, constants, doctor_fees, totalAmount, payment, billingStrategey);
+            return new BillSummary(appointment_date, status, type, appointmentFees, doctor, patient, doctor_fees, totalAmount, payment, billingStrategey);
         }
     }
 

@@ -27,19 +27,19 @@ public class BillingService {
     }
 
     public Bill createBill(Appointment appointment, BillingStrategey billingStrategey) {
-        Bill bill = billFactory.createStandardBill(appointment);
-        // Override the strategy with the provided one
-        return new Bill.BillBuilder()
+        Bill bill = new Bill.BillBuilder()
                 .appointment_date(appointment.getAppointment_date())
                 .status(appointment.getStatus())
                 .type(appointment.getType())
                 .appointmentFees(appointment.getAppointmentFees())
                 .doctor(appointment.getDoctor())
                 .patient(appointment.getPatient())
-                .doctor_fees(0.0) // will be calculated
-                .totalAmount(0.0) // will be calculated
+                .doctor_fees(0.0)
+                .totalAmount(0.0)
                 .billingStrategey(billingStrategey)
                 .build();
+        billStore.put(bill.getBill_id(), bill);
+        return bill;
     }
 
     public Bill createStandardBill(Appointment appointment) {
@@ -72,7 +72,6 @@ public class BillingService {
                     .appointmentFees(bill.getAppointmentFees())
                     .doctor(bill.getDoctor())
                     .patient(bill.getPatient())
-                    .constants(null) // constants
                     .doctor_fees(bill.getDoctor_fees())
                     .totalAmount(bill.calculateTotalAmount())
                     .payment(payment)

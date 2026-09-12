@@ -18,6 +18,7 @@ import java.util.Objects;
 // May need to re-visit once with Bill Summari
 
 public class Bill extends Appointment implements Cloneable {
+    private  Constants constants;
     private int bill_id;
 
     private double doctor_fees;
@@ -25,7 +26,7 @@ public class Bill extends Appointment implements Cloneable {
     final private double tax = Constants.getTAX_RATE();
     private double totalAmount;
     private BillingStrategey billingStrategey;
-    // double appointmentFees;
+     double appointmentFees;
 
 
     IdGenerators id_gen = IdGenerators.getInstance();
@@ -39,7 +40,7 @@ public class Bill extends Appointment implements Cloneable {
         double appointmentFees,
         Doctor doctor,
         Patient patient,
-//        Constants constants,
+      Constants constants,
         double doctor_fees,
         double totalAmount,
         BillingStrategey billingStrategey
@@ -49,7 +50,7 @@ public class Bill extends Appointment implements Cloneable {
             throw new InvalidDataException("Billing strategy is required");
         }
         this.bill_id = id_gen.BillIdGenerator();
-//        this.constants = constants;
+       this.constants = constants;
         this.doctor_fees = doctor_fees;
         this.totalAmount = totalAmount;
         this.billingStrategey = billingStrategey;
@@ -83,7 +84,7 @@ public class Bill extends Appointment implements Cloneable {
             throw new InvalidDataException("Billing strategy is required");
         }
         this.bill_id = id_gen.BillIdGenerator();
-//        this.constants = billBuilder.constants;
+        this.constants = billBuilder.constants;
         this.doctor_fees = billBuilder.doctor_fees;
         this.totalAmount = billBuilder.totalAmount;
         this.billingStrategey = billBuilder.billingStrategy;
@@ -192,9 +193,9 @@ public class Bill extends Appointment implements Cloneable {
         private double appointmentFees;
         private Doctor doctor;
         private Patient patient;
-        private Constants constants;
         private double doctor_fees;
         private double totalAmount;
+        private Constants constants;
 
 
         public BillBuilder appointment_date(Date appointment_date) {

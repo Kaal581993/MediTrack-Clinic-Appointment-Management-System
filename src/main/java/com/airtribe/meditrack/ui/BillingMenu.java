@@ -35,7 +35,7 @@ public class BillingMenu {
 
     public void setAppointmentStore(DataStore<Appointment> appointmentStore) {
         this.appointmentStore.clear();
-        this.appointmentStore.getAll().addAll(appointmentStore.getAll());
+        appointmentStore.getAll().forEach(a -> this.appointmentStore.put(a.getAppointment_id(), a));
     }
 
     public void run() {

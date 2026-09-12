@@ -19,7 +19,6 @@ public class Appointment implements Cloneable {
     private Patient patient;
 
     IdGenerators idgen = IdGenerators.getInstance();
-    private Constants constants;
 
     public Appointment(Date appointment_date, AppointmentStatus status, AppointmentType type, double appointmentFees,Doctor doctor, Patient patient) {
         this.appointment_id = idgen.NewAppointmentIdGenerator();
@@ -118,10 +117,6 @@ public class Appointment implements Cloneable {
                 ", doctor=" + doctorName +
                 ", patient=" + patientName +
                 '}';
-    }
-
-    public Constants getConstants() {
-        return this.constants;
     }
 
     public static class AppointmentBuilder {

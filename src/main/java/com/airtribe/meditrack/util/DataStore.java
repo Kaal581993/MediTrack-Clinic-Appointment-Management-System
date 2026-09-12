@@ -59,6 +59,31 @@ public class DataStore<T> {
         });
     }
 
+    /**
+     * Adds all entities to all internal stores (int-keyed, string-keyed, and list).
+     * Use this when entities need to be retrievable by ID via {@link #get(int)}
+     * or {@link #containsKey(int)}.
+     *
+     * @param entities     collection of entities to add
+     * @param idExtractor  function that extracts the integer ID from each entity
+     */
+    public void putAll(Collection<? extends T> entities, java.util.function.Function<T, Integer> idExtractor) {
+        if (entities == null) {
+            return;
+        }
+        entities.forEach(entity -> {
+            if (entity != null) {
+                Integer id = idExtractor.apply(entity);
+                if (id == null) {
+                    return;
+                }
+                store.put(id, entity);
+                store2.put(String.valueOf(id), entity);
+                upsertList(entity);
+            }
+        });
+    }
+
     public T get(String key) {
         return store2.get(key);
     }
