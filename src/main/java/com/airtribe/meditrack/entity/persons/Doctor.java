@@ -1,0 +1,174 @@
+package com.airtribe.meditrack.entity.persons;
+
+import com.airtribe.meditrack.entity.idgenerators.IdGenerators;
+import com.airtribe.meditrack.interfaces.Searchable;
+
+public class Doctor extends Person implements Searchable {
+
+    IdGenerators id_gen = IdGenerators.getInstance();
+
+    public Doctor(int age, String f_name, String l_name, Gender gender) {
+        super(age, f_name, l_name, gender);
+        this.doc_id = id_gen.DocIdGenerator();
+    }
+
+    public Doctor() {
+    }
+
+    private int doc_id;
+    private Specialization specialization;
+    private double fees;
+
+    public IdGenerators getId_gen() {
+        return id_gen;
+    }
+
+    public int getDoc_id() {
+        return doc_id;
+    }
+
+    public void setDoc_id(int doc_id) {
+        this.doc_id = doc_id;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
+    }
+
+    public double getFees() {
+        return fees;
+    }
+
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
+
+    @Override
+    public Doctor clone() {
+        Doctor cloned = (Doctor) super.clone();
+        cloned.specialization = this.specialization;
+        cloned.fees = this.fees;
+        return cloned;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Doctor doctor = (Doctor) o;
+        return doc_id == doctor.doc_id &&
+                Double.compare(doctor.fees, fees) == 0 &&
+                specialization == doctor.specialization;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(super.hashCode(), doc_id, specialization, fees);
+    }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "doc_id=" + doc_id +
+                ", specialization=" + specialization +
+                ", fees=" + fees +
+                ", p_id=" + getP_id() +
+                ", age=" + getAge() +
+                ", F_name='" + getF_name() + '\'' +
+                ", L_name='" + getL_name() + '\'' +
+                ", gender=" + getGender() +
+                '}';
+    }
+
+    @Override
+    public boolean matches(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return false;
+        }
+        String term = searchTerm.toLowerCase();
+        return (getF_name() != null && getF_name().toLowerCase().contains(term)) ||
+                (getL_name() != null && getL_name().toLowerCase().contains(term)) ||
+                (specialization != null && specialization.name().toLowerCase().contains(term));
+    }
+
+    @Override
+    public String getSearchKey() {
+        StringBuilder key = new StringBuilder();
+        if (getF_name() != null) key.append(getF_name());
+        if (getL_name() != null) { if (key.length() > 0) key.append(' '); key.append(getL_name()); }
+        if (specialization != null) { if (key.length() > 0) key.append(' '); key.append(specialization.name()); }
+        return key.toString();
+    }
+
+    @Override
+    public boolean matchesId(int id) {
+        return this.doc_id == id || getP_id() == id;
+    }
+
+    @Override
+    public boolean matchesName(String name) {
+        if (name == null) return false;
+        String fullName = (getF_name() + " " + getL_name()).trim().toLowerCase();
+        return fullName.contains(name.toLowerCase().trim());
+    }
+
+    // Builder pattern (does not alter existing constructors/logic)
+    public static DoctorBuilder builder() {
+        return new DoctorBuilder();
+    }
+
+    // Extends PersonBuilder so DoctorBuilder inherits the fluent age/f_name/l_name/gender
+    // setters and satisfies the abstract build() contract with a concrete Doctor.
+    public static class DoctorBuilder extends PersonBuilder {
+        private Specialization specialization;
+        private double fees;
+
+        @Override
+        public DoctorBuilder age(int age) {
+            this.age = age;
+            return this;
+        }
+
+        @Override
+        public DoctorBuilder f_name(String f_name) {
+            this.f_name = f_name;
+            return this;
+        }
+
+        @Override
+        public DoctorBuilder l_name(String l_name) {
+            this.l_name = l_name;
+            return this;
+        }
+
+        @Override
+        public DoctorBuilder gender(Gender gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public DoctorBuilder specialization(Specialization specialization) {
+            this.specialization = specialization;
+            return this;
+        }
+
+        public DoctorBuilder fees(double fees) {
+            this.fees = fees;
+            return this;
+        }
+
+        @Override
+        public Doctor build() {
+            Doctor doctor = new Doctor(age, f_name, l_name, gender);
+            doctor.specialization = specialization;
+            doctor.fees = fees;
+            return doctor;
+        }
+    }
+
+}
